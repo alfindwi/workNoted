@@ -37,5 +37,5 @@ model Company {
 enum Status {
   Applied
   Interview
-  Rejeceted
+  Rejected
 }

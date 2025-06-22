@@ -63,10 +63,6 @@ export const createCompany = async (data: companyDTO, userId: number) => {
   }
 };
 
-export const searchCompany = async (query: string) => {
-    
-}
-
 export const updateCompany = async (data: companyDTO, id: number) => {
   try {
     const existingCompany = await prisma.company.findUnique({
@@ -79,13 +75,6 @@ export const updateCompany = async (data: companyDTO, id: number) => {
       throw new Error("Company Not Found");
     }
 
-    const date = new Date();
-    const formatedDate = date.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
-
     const company = await prisma.company.update({
       where: {
         id,
@@ -93,7 +82,7 @@ export const updateCompany = async (data: companyDTO, id: number) => {
       data: {
         companyName: data.companyName,
         applicationMethod: data.applicationMethod,
-        applicationDate: formatedDate,
+        applicationDate: data.applicationDate?.toString(),
         position: data.position,
         status: data.status,
       },

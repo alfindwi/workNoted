@@ -51,25 +51,30 @@ export const login = async (data: LoginDTO) => {
 };
 
 export const register = async (data: RegisterDTO) => {
-  const existedUser = await prisma.user.findUnique({
-    where: {
-      email: data.email,
-    },
-  });
+  try {
+    const existedUser = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
 
-  if (existedUser) {
-    throw new Error("Email Already exist");
+    if (existedUser) {
+      throw new Error("Email Already exist");
+    }
+
+    const hashedPassword = await bcrypt.hash(data.password, 5);
+
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        username: data.username,
+        password: hashedPassword,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    console.log("Register Error " + error);
+    throw error;
   }
-
-  const hashedPassword = await bcrypt.hash(data.password, 5);
-
-  const user = await prisma.user.create({
-    data: {
-      email: data.email,
-      username: data.username,
-      password: hashedPassword,
-    },
-  });
-
-  return user;
 };
