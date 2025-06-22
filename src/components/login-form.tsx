@@ -9,12 +9,76 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { loginAsync } from "@/store/auth/async";
+import { Loader2Icon } from "lucide-react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { PasswordInput } from "./ui/password-input";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading, error } = useAppSelector((state) => state.auth);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<{ email: string; password: string }>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "all",
+    reValidateMode: "onChange",
+  });
+
+  const onSubmit: SubmitHandler<{ email: string; password: string }> = async (
+    data
+  ) => {
+    const res = await dispatch(loginAsync(data));
+
+    if (loginAsync.fulfilled.match(res)) {
+      toast.success("Login successful!", {
+        duration: 3000,
+        icon: "🚀",
+        style: {
+          background: "#3A7D44",
+          color: "#FCFAEE",
+          fontWeight: "600",
+          borderRadius: "6px",
+          boxShadow: "5px 5px 0px #222222",
+          fontFamily: "monospace",
+        },
+      });
+
+      reset({
+        email: "",
+        password: "",
+      });
+
+      navigate("/");
+    } else if (loginAsync.rejected.match(res)) {
+      toast.error(error, {
+        duration: 3000,
+        icon: "🚀",
+        style: {
+          background: "#B8001F",
+          color: "#FCFAEE",
+          fontWeight: "600",
+          borderRadius: "6px",
+          boxShadow: "5px 5px 0px #222222",
+          fontFamily: "monospace",
+        },
+      });
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="bg-[#f2f7f5] text-black font-mono border border-black rounderd-lg shadow-[8px_8px_0px_#222222]">
@@ -25,7 +89,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">
@@ -35,8 +99,10 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  {...register("email")}
                   required
                 />
+                <p>{errors.email && errors.email.message}</p>
               </div>
               <div className="grid gap-3">
                 <div className="flex items-center">
@@ -44,11 +110,21 @@ export function LoginForm({
                     Password<span className="text-red-500">*</span>
                   </Label>
                 </div>
-                <PasswordInput id="password" placeholder="•••••" required />
+                <PasswordInput
+                  id="password"
+                  placeholder="•••••"
+                  required
+                  {...register("password")}
+                />
+                <p>{errors.password && errors.password.message}</p>
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" variant={"blue"}>
-                  Login
+                  {loading ? (
+                    <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
               </div>
             </div>

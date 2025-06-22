@@ -14,29 +14,42 @@ import {
 } from "@/components/ui/popover";
 
 function formatDate(date: Date | undefined) {
-  if (!date) {
-    return "";
-  }
-
-  return date.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  if (!date) return "";
+  return date.toISOString().split("T")[0];
 }
 
 function isValidDate(date: Date | undefined) {
-  if (!date) {
-    return false;
-  }
-  return !isNaN(date.getTime());
+  return date instanceof Date && !isNaN(date.getTime());
 }
 
-export function InputDate() {
+export function InputDate({
+  onChangeDate,
+  value: propValue,
+}: {
+  onChangeDate: (date: string) => void;
+  value?: string;
+}) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+  const [date, setDate] = React.useState<Date | undefined>(() =>
+    propValue && isValidDate(new Date(propValue))
+      ? new Date(propValue)
+      : undefined
+  );
   const [month, setMonth] = React.useState<Date | undefined>(date);
-  const [value, setValue] = React.useState(formatDate(date));
+  const [value, setValue] = React.useState<string>(() =>
+    date ? formatDate(date) : ""
+  );
+
+  React.useEffect(() => {
+    if (!propValue) return;
+    const newDate = new Date(propValue);
+    if (isValidDate(newDate)) {
+      setDate(newDate);
+      setMonth(newDate);
+      setValue(formatDate(newDate));
+    }
+  }, [propValue]);
 
   return (
     <div className="flex flex-col gap-3 mt-2">
@@ -46,15 +59,17 @@ export function InputDate() {
       <div className="relative flex gap-2">
         <Input
           id="date"
+          type="date"
           value={value}
-          placeholder="June 01, 2025"
           className="bg-[#fffdf6] pr-10"
           onChange={(e) => {
-            const date = new Date(e.target.value);
-            setValue(e.target.value);
-            if (isValidDate(date)) {
-              setDate(date);
-              setMonth(date);
+            const newDate = new Date(e.target.value);
+            const iso = e.target.value;
+            setValue(iso);
+            if (isValidDate(newDate)) {
+              setDate(newDate);
+              setMonth(newDate);
+              onChangeDate(iso);
             }
           }}
           onKeyDown={(e) => {
@@ -84,15 +99,25 @@ export function InputDate() {
             <Calendar
               mode="single"
               selected={date}
-              className="bg-[#fffdf6]"
-              captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
-              onSelect={(date) => {
-                setDate(date);
-                setValue(formatDate(date));
+              onSelect={(newDate) => {
+                if (
+                  !newDate ||
+                  (date && newDate.toDateString() === date.toDateString())
+                ) {
+                  setOpen(false);
+                  return;
+                }
+
+                setDate(newDate);
+                const iso = newDate.toISOString().split("T")[0];
+                setValue(iso);
                 setOpen(false);
+                onChangeDate(iso);
               }}
+              className="bg-[#fffdf6]"
+              captionLayout="dropdown"
             />
           </PopoverContent>
         </Popover>

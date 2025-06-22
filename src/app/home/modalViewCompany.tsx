@@ -56,8 +56,7 @@ export function ModalViewCompany({ company, trigger }: ModalViewCompanyProps) {
 
         <DialogClose asChild>
           <Button
-            variant="outline"
-            className="mt-4 border cursor-pointer border-black shadow-[3px_3px_0px_#343131]"
+            variant="blue"
           >
             Close
           </Button>

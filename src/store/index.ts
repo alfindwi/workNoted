@@ -1,9 +1,13 @@
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./auth/slice";
+import companyReducer from "./company/slice";
 
 const store = configureStore({
-    reducer: {
-    },
+  reducer: {
+    auth: authReducer,
+    company: companyReducer
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -12,4 +16,4 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 
-export default store
+export default store;

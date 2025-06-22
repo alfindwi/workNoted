@@ -1,24 +1,36 @@
 import { Home } from "@/app/home/home";
 import { Login } from "@/app/login/login";
 import { Register } from "@/app/register/register";
-import Cookies from "js-cookie";
-import { createBrowserRouter, Navigate, RouterProvider, useLocation, type RouteObject } from "react-router-dom";
+import RootLayout from "@/layouts/rootLayout";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  type RouteObject
+} from "react-router-dom";
 
 const route: RouteObject[] = [
   {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+    ],
+  },
+  {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
-  {
-    path: "/",
-    element: <Home />
-  }
-]
+];
+
+
 
 export default function Router() {
-  return <RouterProvider router={createBrowserRouter(route)} />
+  return <RouterProvider router={createBrowserRouter(route)} />;
 }
