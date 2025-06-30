@@ -17,7 +17,9 @@ model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
   username String
-  password String
+  password String?
+  provider String?
+  providerId String?
 
   companies Company[]
 }
