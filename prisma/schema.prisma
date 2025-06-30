@@ -18,6 +18,8 @@ model User {
   email    String @unique
   username String
   password String?
+  avatar   String?
+  avatarId String?
   provider String?
   providerId String?
 

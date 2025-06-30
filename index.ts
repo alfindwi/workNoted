@@ -4,7 +4,7 @@ import cors from "cors";
 import { createServer } from "http";
 import router from "./src/router";
 import session from "express-session";
-import "./lib/passport";
+import "./src/libs/passport";
 import passport from "passport";
 
 dotenv.config();

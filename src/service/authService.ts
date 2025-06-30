@@ -1,5 +1,5 @@
 import { LoginDTO, RegisterDTO } from "../dto/authDto";
-import { UserDTO } from "../dto/userDto";
+import { OAuthDTO } from "../dto/userDto";
 import { prisma } from "../libs/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -83,7 +83,7 @@ export const register = async (data: RegisterDTO) => {
   }
 };
 
-export const findOrCreateOAuthUser = async (data: UserDTO) => {
+export const findOrCreateOAuthUser = async (data: OAuthDTO) => {
   try {
     let user = await prisma.user.findFirst({
       where: {
