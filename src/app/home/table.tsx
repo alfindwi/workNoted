@@ -18,7 +18,7 @@ import { ModalViewCompany } from "./modalViewCompany";
 import { PaginationComponent } from "./pagination";
 import { CompanySearch } from "./search";
 
-export function TableExample() {
+export function TableComponent() {
   const dispatch = useAppDispatch();
   const companies = useAppSelector((state) => state.company.companies);
 
@@ -44,8 +44,8 @@ export function TableExample() {
   }, [dispatch]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4">
-      <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+    <div className="w-full max-w-6xl mx-auto px-4 py-3 ">
+      <div className="flex  mt-5 flex-col-reverse md:flex-row items-start md:items-center justify-between gap-4 mb-4">
         <CompanySearch
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -56,7 +56,7 @@ export function TableExample() {
             trigger={
               <Button
                 variant="blue"
-                className="w-24 md:w-25 text-sm py-2 px-4 mb-4"
+                className="w-24 md:w-25 text-sm py-2 px-4 mb-4 shadow-[6px_6px_0px_#222222] active:shadow-[4px_4px_0px_#222222] transition-all duration-100"
               >
                 Create
               </Button>
@@ -97,9 +97,7 @@ export function TableExample() {
                 <TableCell className="hidden md:table-cell">
                   {company.applicationMethod}
                 </TableCell>
-                <TableCell>
-                  {company.status}
-                </TableCell>
+                <TableCell>{company.status}</TableCell>
                 <TableCell className="flex gap-2">
                   <ModalViewCompany
                     company={company}

@@ -1,10 +1,10 @@
-import { TableExample } from "./table";
+import { TableComponent } from "./table";
 
 
 export function Home() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#FFFDF6]">
-            <TableExample/>
+        <div className=" py-5 flex items-center justify-center bg-[#FFFDF6]">
+            <TableComponent/>
         </div>
     );
 }

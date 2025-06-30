@@ -88,7 +88,7 @@ export function RegisterForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               <div className="grid gap-3">
                 <Label htmlFor="email">
                   Email<span className="text-red-500">*</span>
@@ -147,6 +147,7 @@ export function RegisterForm({
                 Sign in
               </a>
             </div>
+
           </form>
         </CardContent>
       </Card>

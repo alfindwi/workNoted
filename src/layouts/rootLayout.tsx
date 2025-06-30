@@ -1,5 +1,6 @@
 import { useAppSelector } from "@/store";
 import { Navigate, Outlet } from "react-router-dom";
+import { AppLayout } from "./appLayout";
 
 const RootLayout = () => {
   const authState = useAppSelector((state) => state.auth);
@@ -8,7 +9,11 @@ const RootLayout = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <AppLayout>
+      <Outlet />
+    </AppLayout>
+  );
 };
 
 export default RootLayout;

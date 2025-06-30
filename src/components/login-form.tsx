@@ -134,6 +134,49 @@ export function LoginForm({
                 Sign up
               </a>
             </div>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase text-gray-500 font-bold tracking-wider">
+                <span className="bg-[#f4fafa] px-3">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-4 ">
+              <Button
+                type="button"
+                variant="outline"
+                className="p-3 rounded-full border cursor-pointer border-black shadow-[3px_3px_0px_#222] hover:shadow-md hover:scale-105 transition-all duration-150 bg-white"
+                onClick={() =>
+                  (window.location.href = "http://localhost:3000/auth/google")
+                }
+                aria-label="Login with Google"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                  alt="Google logo"
+                  className="w-6 h-6"
+                />
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="p-3 rounded-full border cursor-pointer border-black shadow-[3px_3px_0px_#222] hover:shadow-md hover:scale-105 transition-all duration-150 bg-white"
+                onClick={() =>
+                  (window.location.href = "http://localhost:3000/auth/github")
+                }
+                aria-label="Login with GitHub"
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+                  alt="GitHub logo"
+                  className="w-6 h-6"
+                />
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
