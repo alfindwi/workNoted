@@ -23,15 +23,27 @@ model User {
 }
 
 model Company {
-  id                Int      @id @default(autoincrement())
+  id                Int    @id @default(autoincrement())
   userId            Int
   companyName       String
   position          String
-  applicationDate    String
+  applicationDate   String
   applicationMethod String
-  status            Status   @default(Applied)
+  status            Status @default(Applied)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  jobActivities JobActivity[]
+}
+
+model JobActivity {
+  id       Int     @id @default(autoincrement())
+  date     String
+  activity String
+  notes    String?
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 enum Status {

@@ -9,6 +9,9 @@ export const getCompany = async (userId: number) => {
       where: {
         userId: userId,
       },
+      include: {
+        jobActivities: true,
+      },
     });
 
     return company;
@@ -23,6 +26,9 @@ export const getCompanyId = async (id: number) => {
     const company = await prisma.company.findUnique({
       where: {
         id,
+      },
+      include: {
+        jobActivities: true,
       },
     });
 
