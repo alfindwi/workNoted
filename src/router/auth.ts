@@ -10,16 +10,14 @@ authRouter.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
+
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    successRedirect: "/login",
+    failureRedirect: "http://localhost:5173/login?error=access_denied",
   }),
-  (req, res) => {
-    const user = req.user as { token: string };
-    res.redirect(`http://localhost:5173/oauth-success?token=${user.token}`);
-  }
+  authController.oauthSuccessController
 );
 
 authRouter.get(
@@ -29,11 +27,11 @@ authRouter.get(
 
 authRouter.get(
   "/github/callback",
-  passport.authenticate("github", { session: false }),
-  (req, res) => {
-    const user = req.user as { token: string };
-    res.redirect(`http://localhost:5173/oauth-success?token=${user.token}`);
-  }
+  passport.authenticate("github", {
+    session: false,
+    failureRedirect: "http://localhost:5173/login?error=access_denied",
+  }),
+  authController.oauthSuccessController
 );
 
 export default authRouter;

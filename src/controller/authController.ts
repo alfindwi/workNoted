@@ -30,3 +30,15 @@ export const register = async (req: Request, res: Response) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const oauthSuccessController = (req: Request, res: Response) => {
+  const user = req.user as { token: string };
+
+  if (!user || !user.token) {
+    return res.redirect("http://localhost:5173/login?error=unauthorized");
+  }
+
+  return res.redirect(
+    `http://localhost:5173/oauth-success?token=${user.token}`
+  );
+};
