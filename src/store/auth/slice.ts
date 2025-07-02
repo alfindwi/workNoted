@@ -28,6 +28,9 @@ const authSlice = createSlice({
       Cookies.remove("token");
       Cookies.remove("user");
     },
+    SET_TOKEN(state, action) {
+      state.token = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -42,7 +45,9 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.error = null;
         Cookies.set("token", action.payload.token, { expires: 1 });
-        Cookies.set("user", JSON.stringify(action.payload.user), { expires: 1 });
+        Cookies.set("user", JSON.stringify(action.payload.user), {
+          expires: 1,
+        });
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.loading = false;
@@ -67,6 +72,5 @@ const authSlice = createSlice({
   },
 });
 
-
-export const { LOGOUT } = authSlice.actions;
+export const { LOGOUT, SET_TOKEN } = authSlice.actions;
 export default authSlice.reducer;

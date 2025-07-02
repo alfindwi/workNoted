@@ -6,12 +6,21 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { useAppDispatch } from "@/store";
+import { LOGOUT } from "@/store/auth/slice";
+import Cookies from "js-cookie";
 import { CircleUser, DoorOpen, Menu, Settings } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function Navbar() {
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(LOGOUT());
+    Cookies.remove("token");
+  };
 
   return (
     <nav className="bg-[#f4fafa] border-b border-black shadow-[4px_4px_0px_#222] font-mono z-50">
@@ -21,7 +30,7 @@ export function Navbar() {
         </Link>
 
         <div className="hidden md:flex gap-6 items-center">
-          <Link to="/dashboard" className="text-sm text-black hover:underline">
+          <Link to="/" className="text-sm text-black hover:underline">
             Dashboard
           </Link>
           <Link to="/companies" className="text-sm text-black hover:underline">
@@ -61,10 +70,8 @@ export function Navbar() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Button
-                  className="flex justify-start items-center bg-transparent text-left text-sm cursor-pointer font-mono text-black w-full px-3 py-2 rounded-lg transition hover:bg-black/10"
-                >
-                  <DoorOpen/>
+                <Button onClick={handleLogout} className="flex justify-start items-center bg-transparent text-left text-sm cursor-pointer font-mono text-black w-full px-3 py-2 rounded-lg transition hover:bg-black/10">
+                  <DoorOpen />
                   Logout
                 </Button>
               </DropdownMenuItem>
@@ -72,7 +79,6 @@ export function Navbar() {
           </DropdownMenu>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden p-2 border border-black rounded shadow-[2px_2px_0px_#222] bg-white"
@@ -81,7 +87,6 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {open && (
         <div className="md:hidden px-4 pb-3 flex flex-col gap-3 bg-[#f4fafa] border-t border-black shadow-[2px_2px_0px_#222]">
           <Link to="/dashboard" className="text-sm text-black">
