@@ -1,6 +1,7 @@
 import { Home } from "@/app/home/home";
 import { TableComponent } from "@/app/home/table";
 import { Login } from "@/app/login/login";
+import { Profile } from "@/app/profile/profile";
 import { Register } from "@/app/register/register";
 import { OAuthSuccess } from "@/components/oauthSuccess";
 import RootLayout from "@/layouts/rootLayout";
@@ -19,7 +20,11 @@ const route: RouteObject[] = [
       {
         path: "/companies",
         element: <TableComponent />,
-      }
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
     ],
   },
   {
